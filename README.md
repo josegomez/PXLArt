@@ -20,5 +20,5 @@ And of-course Starry Night as Pixel Art
 
 Feel free to Turn your co-workers or your cat into XL Art!
 
-[StarryNight.xlsx|attachment](https://www.epiusers.help/uploads/short-url/azfEcJPxk8OqlV3cYXe3AdI1Tpg.xlsx) (462.6 KB)
+[StarryNight.xlsx](https://www.epiusers.help/uploads/short-url/azfEcJPxk8OqlV3cYXe3AdI1Tpg.xlsx) (462.6 KB)
 
