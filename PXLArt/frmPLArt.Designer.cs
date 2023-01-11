@@ -47,6 +47,8 @@ namespace PXLArt
             // 
             // picPic
             // 
+            this.picPic.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.picPic.InitialImage = global::PXLArt.Properties.Resources.no_photo_or_blank_image_icon_loading_images_vector_37375020;
             this.picPic.Location = new System.Drawing.Point(12, 12);
             this.picPic.Name = "picPic";
             this.picPic.Size = new System.Drawing.Size(284, 284);
