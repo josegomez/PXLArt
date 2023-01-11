@@ -43,7 +43,7 @@ namespace PXLArt
             this.btnCreatePXLArt.TabIndex = 0;
             this.btnCreatePXLArt.Text = "Convert Image";
             this.btnCreatePXLArt.UseVisualStyleBackColor = true;
-            this.btnCreatePXLArt.Click += new System.EventHandler(this.button1_Click);
+            this.btnCreatePXLArt.Click += new System.EventHandler(this.convertImage_Click);
             // 
             // picPic
             // 

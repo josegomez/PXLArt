@@ -20,13 +20,13 @@ namespace PXLArt
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void convertImage_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter= "Bitmap Images|*.bmp;*.jpg;*.jpeg;*.png;*.gif;*.ico;*.tif;*.tiff|All Files (*.*)|*.*";
+            ofd.Filter = "Bitmap Images|*.bmp;*.jpg;*.jpeg;*.png;*.gif;*.ico;*.tif;*.tiff|All Files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                
+
                 ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
                 Image image = Image.FromFile(ofd.FileName);
@@ -53,57 +53,57 @@ namespace PXLArt
                     image = newImage;
                 }
                 picPic.Image = image;
-                
+
                 // Get the width and height of the image
                 int width = image.Width;
                 int height = image.Height;
-                pbProgress.Maximum = (width * height)+width+height;
+                pbProgress.Maximum = (width * height) + width + height;
                 pbProgress.Step = 1;
                 Task.Run(() =>
                 {
-                // create new Excel package
-                using (ExcelPackage excelPackage = new ExcelPackage())
-                {
-                    // add a new worksheet to the empty workbook
-                    ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("PixelArt");
-                    Bitmap imageB = new Bitmap(image);
-                    BitmapData imageData = imageB.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-                    // Get the address of the first pixel
-                    IntPtr pointer = imageData.Scan0;
-                    // Declare an array to hold the bytes of the image
-                    int bytes = Math.Abs(imageData.Stride) * height;
-                    byte[] data = new byte[bytes];
-                    // Copy the pixels to the array
-                    System.Runtime.InteropServices.Marshal.Copy(pointer, data, 0, bytes);
-                    // Unlock the bits of the image
-                    imageB.UnlockBits(imageData);
+                    // create new Excel package
+                    using (ExcelPackage excelPackage = new ExcelPackage())
+                    {
+                        // add a new worksheet to the empty workbook
+                        ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("PixelArt");
+                        Bitmap imageB = new Bitmap(image);
+                        BitmapData imageData = imageB.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                        // Get the address of the first pixel
+                        IntPtr pointer = imageData.Scan0;
+                        // Declare an array to hold the bytes of the image
+                        int bytes = Math.Abs(imageData.Stride) * height;
+                        byte[] data = new byte[bytes];
+                        // Copy the pixels to the array
+                        System.Runtime.InteropServices.Marshal.Copy(pointer, data, 0, bytes);
+                        // Unlock the bits of the image
+                        imageB.UnlockBits(imageData);
 
                         List<Tuple<int, int>> listOfCordinates = new List<Tuple<int, int>>();
-                    // Loop through the rows and columns of the image
-                    for (int row = 1; row <= height; row++)
-                    {
-                        for (int col = 1; col <= width; col++)
+                        // Loop through the rows and columns of the image
+                        for (int row = 1; row <= height; row++)
                         {
-                            
-                            int pixelIndex = ((row - 1) * width + (col - 1)) * 4;
-                            Color pixelColor = Color.FromArgb(data[pixelIndex + 3], data[pixelIndex + 2], data[pixelIndex + 1], data[pixelIndex]);
-                            // Set the cell color to the pixel color
-                            worksheet.Cells[row, col].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            worksheet.Cells[row, col].Style.Fill.BackgroundColor.SetColor(pixelColor);
-                            try
+                            for (int col = 1; col <= width; col++)
                             {
-                                this.Invoke((ThreadStart)delegate ()
+
+                                int pixelIndex = ((row - 1) * width + (col - 1)) * 4;
+                                Color pixelColor = Color.FromArgb(data[pixelIndex + 3], data[pixelIndex + 2], data[pixelIndex + 1], data[pixelIndex]);
+                                // Set the cell color to the pixel color
+                                worksheet.Cells[row, col].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                worksheet.Cells[row, col].Style.Fill.BackgroundColor.SetColor(pixelColor);
+                                try
                                 {
-                                    pbProgress.PerformStep();
-                                });
+                                    this.Invoke((ThreadStart)delegate ()
+                                    {
+                                        pbProgress.PerformStep();
+                                    });
+                                }
+                                catch { }
                             }
-                            catch { }
                         }
-                    }
-                        
 
 
-                        
+
+
                         // set the column width for all columns to be square
                         for (int i = 1; i <= width; i++)
                         {
