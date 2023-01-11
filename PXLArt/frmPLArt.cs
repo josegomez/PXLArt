@@ -59,6 +59,7 @@ namespace PXLArt
                 int height = image.Height;
                 pbProgress.Maximum = (width * height) + width + height;
                 pbProgress.Step = 1;
+                pbProgress.Value = 0;
                 Task.Run(() =>
                 {
                     // create new Excel package
